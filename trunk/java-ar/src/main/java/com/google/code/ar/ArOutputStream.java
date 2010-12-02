@@ -1,18 +1,66 @@
 package com.google.code.ar;
 
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import java.io.ByteArrayOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+/**
+ * OutputStream to write AR files. Normal scenario:
+ * <p><blockquote><pre>
+ * OutputStream os = ...
+ * ArEntry[] entries = ...
+ * ArOutputStream aros = null;
+ * try {
+ *      aros = new ArOutputStream(os);
+ *      aros.setEntries(entries);
+ * } catch(Exception e) {
+ *  //do logging. handle exception
+ * } finally {
+ *      if( aros != null ) {
+ *          try {
+ *              aros.close();
+ *          } catch(IOException e) {
+ *              //do logging
+ *          }
+ *      }
+ * }
+ * </pre></blockquote></p>
+ * 
+ * If ArEntry contains long file name, then ArOutputStream produces GNU compatible AR data.
+ * 
+ * @author dernasherbrezon
+ *
+ */
 public class ArOutputStream extends FilterOutputStream {
 
     private static final Charset ASCII = Charset.forName("ASCII");
-    private final static byte[] magic = new byte[]{96, 10};
+    private final static byte[] MAGIC = new byte[]{96, 10};
+    private final static byte[] HEADER = new byte[]{33, 60, 97, 114, 99, 104, 62, 10};
     private boolean isEntriesPresent = false;
     private boolean isClosed = false;
 
+    /**
+     * @param out - underlaying OutputStream. Cannot be closed or null
+     * @throws IllegalArgumentException if provided OutputStream is null
+     */
     public ArOutputStream(OutputStream out) {
         super(out);
         if (out == null) {
@@ -20,6 +68,13 @@ public class ArOutputStream extends FilterOutputStream {
         }
     }
 
+    /**
+     * Write entries to the underlaying OutputStream. Must be called once for every OutputStream. Could be empty or null.
+     * @param entries
+     * @throws IOException if stream has been closed<br>underlaying stream has been closed<br>second attempt to set entries<br>
+     * @throws IllegalArgumentException if provided entries contain invalid data.
+     * @see com.google.code.ar.ArEntry
+     */
     public void setEntries(ArEntry[] entries) throws IOException {
         if (isClosed) {
             throw new IOException("stream closed");
@@ -27,7 +82,12 @@ public class ArOutputStream extends FilterOutputStream {
         if (isEntriesPresent) {
             throw new IOException("archive entries already specified");
         }
-        writeHeader();
+        if (entries != null) {
+            for (int i = 0; i < entries.length; i++) {
+                ArEntryValidator.validate(entries[i]);
+            }
+        }
+        write(HEADER);
         if (entries == null || entries.length == 0) {
             isEntriesPresent = true;
             return;
@@ -42,7 +102,7 @@ public class ArOutputStream extends FilterOutputStream {
             int namesDataOffset = 0;
             for (int i = 0; i < entries.length; i++) {
                 ArEntry curEntry = entries[i];
-                if( curEntry == null ) { 
+                if (curEntry == null) {
                     continue;
                 }
                 newNamesInsteadOfLong[i] = "/" + namesDataOffset;
@@ -52,7 +112,7 @@ public class ArOutputStream extends FilterOutputStream {
             }
             //filesize
             write(String.valueOf(baos.size()), 10);
-            write(magic);
+            write(MAGIC);
             //actual data
             write(baos.toByteArray());
             if (baos.size() % 2 != 0) { //align to 2
@@ -64,7 +124,7 @@ public class ArOutputStream extends FilterOutputStream {
 
         for (int i = 0; i < entries.length; i++) {
             ArEntry curEntry = entries[i];
-            if( curEntry == null ) {
+            if (curEntry == null) {
                 continue;
             }
             if (newNamesInsteadOfLong != null) {
@@ -77,12 +137,13 @@ public class ArOutputStream extends FilterOutputStream {
             write(String.valueOf(curEntry.getGroupId()), 6);
             write(String.valueOf(curEntry.getFileMode()), 8);
             write(String.valueOf(curEntry.getData().length), 10);
-            write(magic);
+            write(MAGIC);
             write(curEntry.getData());
-            if( curEntry.getData().length % 2 != 0 ) {
+            if (curEntry.getData().length % 2 != 0) {
                 write('\n');
             }
         }
+        isEntriesPresent = true;
     }
 
     private static String getCurTime() {
@@ -101,14 +162,10 @@ public class ArOutputStream extends FilterOutputStream {
         }
     }
 
-    private void writeHeader() throws IOException {
-        write(new byte[]{33, 60, 97, 114, 99, 104, 62, 10});
-    }
-
     private static boolean hasLongNames(ArEntry[] entries) {
         for (int i = 0; i < entries.length; i++) {
             ArEntry curEntry = entries[i];
-            if( curEntry == null ) {
+            if (curEntry == null) {
                 continue;
             }
             byte[] filename = curEntry.getFilename().getBytes(ASCII);
@@ -119,6 +176,9 @@ public class ArOutputStream extends FilterOutputStream {
         return false;
     }
 
+    /**
+     * Closes underlying stream
+     */
     public void close() throws IOException {
         super.close();
         isClosed = true;

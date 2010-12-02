@@ -2,15 +2,14 @@ package com.google.code.ar;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
 
 public class ArOutputStreamTest extends TestCase {
-    
+
     public void testEmpty() throws Exception {
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ArOutputStream aros = new ArOutputStream(baos);
         aros.setEntries(null);
@@ -80,10 +79,5 @@ public class ArOutputStreamTest extends TestCase {
         assertEquals(expected.getData().length, got.getData().length);
         assertTrue(Arrays.equals(expected.getData(), got.getData()));
     }
-    
-    public static void main(String[] args) throws Exception {
-        ArOutputStream aris = new ArOutputStream(new FileOutputStream("test.a"));
-        aris.setEntries(createValidEntries());
-        aris.close();
-    }
+
 }
