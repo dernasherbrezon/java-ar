@@ -51,9 +51,9 @@ import java.nio.charset.Charset;
  */
 public class ArOutputStream extends FilterOutputStream {
 
-    private static final Charset ASCII = Charset.forName("ASCII");
-    private final static byte[] MAGIC = new byte[]{96, 10};
-    private final static byte[] HEADER = new byte[]{33, 60, 97, 114, 99, 104, 62, 10};
+    static final Charset ASCII = Charset.forName("ASCII");
+    final static byte[] MAGIC = new byte[]{96, 10};
+    final static byte[] HEADER = new byte[]{33, 60, 97, 114, 99, 104, 62, 10};
     private boolean isEntriesPresent = false;
     private boolean isClosed = false;
 
@@ -84,7 +84,7 @@ public class ArOutputStream extends FilterOutputStream {
         }
         if (entries != null) {
             for (int i = 0; i < entries.length; i++) {
-                ArEntryValidator.validate(entries[i]);
+                ArEntryValidator.validateInMemoryEntry(entries[i]);
             }
         }
         write(HEADER);
@@ -146,7 +146,7 @@ public class ArOutputStream extends FilterOutputStream {
         isEntriesPresent = true;
     }
 
-    private static String getCurTime() {
+    static String getCurTime() {
         String curMem = String.valueOf(System.currentTimeMillis());
         return curMem.substring(0, curMem.length() - 3);
     }

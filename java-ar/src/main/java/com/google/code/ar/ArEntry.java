@@ -63,7 +63,7 @@ public class ArEntry {
         return fileModificationTimestamp;
     }
 
-    public void setFileModificationTimestamp(long fileModificationTimestamp) {
+    void setFileModificationTimestamp(long fileModificationTimestamp) {
         this.fileModificationTimestamp = fileModificationTimestamp;
     }
 
