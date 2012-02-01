@@ -7,17 +7,18 @@ import java.nio.charset.Charset;
 
 import junit.framework.TestCase;
 
-public class ArFileOutputTest extends TestCase {
+public class ArFileOutputStreamTest extends TestCase {
 
 	private final static String FILENAME = "file.deb";
 
 	public void testWriteRead() throws IOException {
-		ArFileOutput fileOutput = new ArFileOutput(FILENAME);
+		ArFileOutputStream fileOutput = new ArFileOutputStream(FILENAME);
 		ArEntry[] entries = createValidEntries();
 		for (int i = 0; i < entries.length; i++) {
 			ArEntry curEntry = entries[i];
 			fileOutput.putNextEntry(curEntry);
-			fileOutput.write("this is some string. maybe long long long".getBytes(Charset.forName("ASCII")));
+			byte[] data = "this is some string. maybe long long long".getBytes(Charset.forName("ASCII"));
+			fileOutput.write(data, 0, data.length);
 			fileOutput.closeEntry();
 		}
 		fileOutput.close();
