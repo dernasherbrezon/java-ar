@@ -17,6 +17,7 @@ package com.google.code.ar;
  */
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.RandomAccessFile;
 
 /**
@@ -27,9 +28,9 @@ import java.io.RandomAccessFile;
  * 
  * <p><blockquote><pre>
  * ArEntry[] entries = ...
- * ArFileOutput afo = null;
+ * ArFileOutputStream afo = null;
  * try {
- *      afo = new ArFileOutput("archive.a");
+ *      afo = new ArFileOutputStream("archive.a");
  *      for( int i=0;i&lt;entries.lenght;i++) {
  *      	afo.putNextEntry(entries[i]);
  *      	//write data using afo.write();
@@ -48,11 +49,11 @@ import java.io.RandomAccessFile;
  * }
  * </pre></blockquote></p>
  * 
- * @see com.google.code.ar.ArFileOutputTest
+ * @see com.google.code.ar.ArFileOutputStreamTest
  * @author dernasherbrezon
  *
  */
-public class ArFileOutput {
+public class ArFileOutputStream extends OutputStream {
 
 	private final RandomAccessFile raf;
 	private boolean isClosed = false;
@@ -61,7 +62,7 @@ public class ArFileOutput {
 	private long curFileLenghtPointer;
 	private long curWroteBytes = 0;
 
-	public ArFileOutput(String fileName) throws IOException {
+	public ArFileOutputStream(String fileName) throws IOException {
 		this.raf = new RandomAccessFile(fileName, "rw");
 	}
 
@@ -142,21 +143,27 @@ public class ArFileOutput {
 		curEntry = null;
 	}
 	
+	@Override
 	public void write(int b) throws IOException {
 		raf.write(b);
 		curWroteBytes++;
 	}
-
+	
+	@Override
 	public void write(byte[] b) throws IOException {
 		raf.write(b);
 		curWroteBytes += b.length;
 	}
-
-    /**
-     * Closes underlying file
-     */
+	
+	@Override
+	public void write(byte[] b, int off, int len) throws IOException {
+		raf.write(b, off, len);
+		curWroteBytes += len;
+	}
+	
+	@Override
 	public void close() throws IOException {
-		if( curEntry != null ) {
+		if (curEntry != null) {
 			closeEntry();
 		}
 		raf.getFD().sync();
@@ -164,4 +171,8 @@ public class ArFileOutput {
 		isClosed = true;
 	}
 
+	@Override
+	public void flush() throws IOException {
+		raf.getChannel().force(false);
+	}
 }
