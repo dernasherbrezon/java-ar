@@ -33,7 +33,6 @@ public class ArEntry {
 
     /**
      * File data. Couldnt be null, but could be empty (byte[0])
-     * @return
      */
     public byte[] getData() {
         return data;
@@ -45,7 +44,6 @@ public class ArEntry {
 
     /**
      * File name. Could be null or empty. Should be in ASCII (one byte) encoding.
-     * @return
      */
     public String getFilename() {
         return filename;
@@ -57,7 +55,6 @@ public class ArEntry {
 
     /**
      * Unix milliseconds from GMT 01 Jan 00:00:00 1970. Should be positive
-     * @return
      */
     public long getFileModificationTimestamp() {
         return fileModificationTimestamp;
@@ -70,7 +67,6 @@ public class ArEntry {
     /**
      * File owner acl. Should be positive
      * @see <a href="http://en.wikipedia.org/wiki/Filesystem_permissions">Filesystem_permissions</a>
-     * @return
      */
     public int getOwnerId() {
         return ownerId;
@@ -83,7 +79,6 @@ public class ArEntry {
     /**
      * File group acl. Should be positive
      * @see <a href="http://en.wikipedia.org/wiki/Filesystem_permissions">Filesystem_permissions</a>
-     * @return
      */
     public int getGroupId() {
         return groupId;
@@ -96,7 +91,6 @@ public class ArEntry {
     /**
      * File mode. Should be positive
      * @see <a href="http://en.wikipedia.org/wiki/Filesystem_permissions">Filesystem_permissions</a>
-     * @return
      */
     public int getFileMode() {
         return fileMode;

@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 /**
  * InputStream to read AR files. Normal scenario:
  * 
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * InputStream is = ...
  * ArInputStream aris = null;
  * try {
@@ -44,7 +44,7 @@ import java.nio.charset.Charset;
  *          }
  *      }
  * }
- * </pre></blockquote></p>
+ * </pre></blockquote>
  * 
  * Supports only GNU compatible AR data.
  * 

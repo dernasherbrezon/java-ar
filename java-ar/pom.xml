@@ -51,7 +51,7 @@
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
-						<phase>verify</phase>
+						<phase>deploy</phase>
 						<goals>
 							<goal>sign</goal>
 						</goals>
@@ -114,7 +114,8 @@
 		<url>https://github.com/dernasherbrezon/java-ar</url>
 		<connection>scm:git:git@github.com/dernasherbrezon/java-ar.git</connection>
 		<developerConnection>scm:git:https://github.com/dernasherbrezon/java-ar.git</developerConnection>
-	</scm>
+	  <tag>ar-2.2</tag>
+  </scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>

@@ -26,7 +26,7 @@ import java.io.RandomAccessFile;
  * <p>NOTE: that the long file names which are longer than 16 bytes will be truncated to the first 16.</p>
  * Normal scenario: 
  * 
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * ArEntry[] entries = ...
  * ArFileOutputStream afo = null;
  * try {
@@ -47,9 +47,8 @@ import java.io.RandomAccessFile;
  *          }
  *      }
  * }
- * </pre></blockquote></p>
+ * </pre></blockquote>
  * 
- * @see com.google.code.ar.ArFileOutputStreamTest
  * @author dernasherbrezon
  *
  */
@@ -68,7 +67,7 @@ public class ArFileOutputStream extends OutputStream {
 
 	/**
 	 * Closes previous entry if it wasnt closed and starts new entry. File size will be filled later on closeEntry()
-	 * @param entry
+	 * @param entry - entry
 	 * @throws IOException if stream has been closed or unable to write to file.
      * @throws IllegalArgumentException if provided entry contains invalid data.
 	 */
@@ -123,7 +122,7 @@ public class ArFileOutputStream extends OutputStream {
 
     /**
      * close current entry and fill file size
-     * @throws IOException
+     * @throws IOException - in case of io error
      */
 	public void closeEntry() throws IOException {
 		if (curEntry == null) {

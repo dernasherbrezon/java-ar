@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 
 /**
  * OutputStream to write AR files. Normal scenario:
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * OutputStream os = ...
  * ArEntry[] entries = ...
  * ArOutputStream aros = null;
@@ -42,7 +42,7 @@ import java.nio.charset.Charset;
  *          }
  *      }
  * }
- * </pre></blockquote></p>
+ * </pre></blockquote>
  * 
  * If ArEntry contains long file name, then ArOutputStream produces GNU compatible AR data.
  * 
@@ -70,7 +70,7 @@ public class ArOutputStream extends FilterOutputStream {
 
     /**
      * Write entries to the underlaying OutputStream. Must be called once for every OutputStream. Could be empty or null.
-     * @param entries
+     * @param entries - entries
      * @throws IOException if stream has been closed<br>underlaying stream has been closed<br>second attempt to set entries<br>
      * @throws IllegalArgumentException if provided entries contain invalid data.
      * @see com.google.code.ar.ArEntry
