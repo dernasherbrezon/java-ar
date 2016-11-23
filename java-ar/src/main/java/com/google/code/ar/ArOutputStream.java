@@ -179,6 +179,7 @@ public class ArOutputStream extends FilterOutputStream {
     /**
      * Closes underlying stream
      */
+    @Override
     public void close() throws IOException {
         super.close();
         isClosed = true;

@@ -82,14 +82,19 @@ public class ArInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public boolean markSupported() {
         return false;
     }
 
+    @Override
     public synchronized void mark(int readlimit) {
+    	//do nothing
     }
 
+    @Override
     public synchronized void reset() throws IOException {
+    	//do nothing
     }
 
     /**
@@ -236,6 +241,7 @@ public class ArInputStream extends FilterInputStream {
     /**
      * Closes underlying stream
      */
+    @Override
     public void close() throws IOException {
         super.close();
         isClosed = true;
