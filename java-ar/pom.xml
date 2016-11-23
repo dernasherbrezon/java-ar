@@ -4,7 +4,8 @@
 	<artifactId>ar</artifactId>
 	<version>2.3-SNAPSHOT</version>
 	<url>https://github.com/dernasherbrezon/java-ar</url>
-	<name>Java library to work with AR arhives</name>
+	<name>AR arhives</name>
+	<description>Java library to work with AR archives</description>
 	<inceptionYear>2010</inceptionYear>
 
 	<properties>
@@ -51,7 +52,7 @@
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
-						<phase>deploy</phase>
+						<phase>verify</phase>
 						<goals>
 							<goal>sign</goal>
 						</goals>
