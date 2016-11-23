@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.aerse</groupId>
 	<artifactId>ar</artifactId>
-	<version>2.2-SNAPSHOT</version>
+	<version>2.2</version>
 	<url>https://github.com/dernasherbrezon/java-ar</url>
 	<name>Java library to work with AR arhives</name>
 	<inceptionYear>2010</inceptionYear>
