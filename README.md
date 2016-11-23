@@ -16,18 +16,8 @@ Add dependency:
 <dependency>
 	<groupId>com.google.code</groupId>
 	<artifactId>ar</artifactId>
-	<version>2.1</version>
+	<version>2.2</version>
 </dependency>
-```
-
-Manually download and install or add repository:
-```
-<repositories>
-	<repository>
-		<id>ar-repo</id>
-		<url>http://java-ar.googlecode.com/svn/maven/</url>
-	</repository>
-</repositories>
 ```
 
 Read
