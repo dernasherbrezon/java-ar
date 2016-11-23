@@ -14,9 +14,9 @@ Maven support
 Add dependency:
 ```
 <dependency>
-	<groupId>com.google.code</groupId>
+	<groupId>com.aerse</groupId>
 	<artifactId>ar</artifactId>
-	<version>2.2</version>
+	<version>2.4</version>
 </dependency>
 ```
 
